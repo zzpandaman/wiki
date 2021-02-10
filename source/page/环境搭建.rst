@@ -54,6 +54,42 @@ cmd执行以下命令：
 	import sphinx_rtd_theme
 	html_theme = 'sphinx_rtd_theme'
 
+3.4.托管到git和read the docs
+
+::
+
+	 git init
+	 git add .
+	 git commit -m "first commit"
+	 git branch -M main
+	 git remote add origin git@github.com:luhuadong/diary.git
+	 git push -u origin main
+
+`read the doc官网 <https://readthedocs.org/>`_ 绑定github之后就可以生成文档了
+因为SSH默认只读取id_rsa,为了让SSH识别新的私钥,需要使用命令将其添加到SSH agent:
+
+::
+
+	ssh-agent bash
+	ssh-add ~/.ssh/id_rsa
+	ssh-add ~/.ssh/id_rsa_github
+	ssh-add -l
+
+在~./ssh目录下新建一个config文件:
+
+::
+
+	# gitlab
+	Host g.miinno.net
+	    HostName g.miinno.net
+	    PreferredAuthentications publickey
+	    IdentityFile  ~/.ssh/id_rsa_gitlab
+	# github
+	Host github.com
+	    HostName github.com
+	    PreferredAuthentications publickey
+	    IdentityFile ~/.ssh/id_rsa
+
 开发环境
 --------
 1.官网下载安装jdk，配置好路径
