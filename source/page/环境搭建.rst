@@ -1,0 +1,69 @@
+环境搭建
+========
+
+下载时一个提速的方法
+-----------------------
+1. 去 `dns检测 <http://tool.chinaz.com/dns>`_ 弄一个ttl值小的ip
+2. 修改host并使其生效
+
+::
+	
+	host路径： C:\Windows\System32\drivers\etc
+	修改host参照： 52.220.219.99 jetbrains.com
+	cmd命令： ipconfig/flushdns
+
+搭建wiki
+--------
+1.官网下载安装python
+
+2.安装sphinx及theme(ps:阿里镜像贼快)
+
+cmd执行以下命令：
+
+::
+
+	pip install -i https://pypi.douban.com/simple/ sphinx
+	cd workplace
+	sphinx-quikstart
+	make html
+	pip install -i https://pypi.douban.com/simple/ sphinx_rtd_theme
+
+3.使theme生效以及theme宽度问题
+
+3.1.在source/_static目录下建立style.css
+
+::
+
+	.wy-nav-content {
+		max-width: none;
+	}
+
+3.2.在source/_templates目录下建立layout.html
+
+::
+
+	{% extends "!layout.html" %}
+	{% block extrahead %}
+    	<link href="{{ pathto("_static/style.css", True) }}" rel="stylesheet" type="text/css">
+	{% endblock %}
+
+3.3.修改conf.py
+
+::
+
+	import sphinx_rtd_theme
+	html_theme = 'sphinx_rtd_theme'
+
+开发环境
+--------
+1.官网下载安装jdk，配置好路径
+
+2.官网下载idea 2020.2.3，其他参照 `支持正版 <http://idea.studycoder.com/10086.html>`_
+
+3.官网下载maven，setting.xml替换
+
+4.官网下载git,TortoiseSVN;ssh密钥配置，host文件修改
+
+5.官网下载mysql及navicat
+
+
