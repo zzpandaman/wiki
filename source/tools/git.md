@@ -19,10 +19,74 @@
 
 ## 2. 安装
 
+- 参考 [菜鸟教程](https://www.runoob.com/git/git-install-setup.html)
 
 ## 3. 工作原理
 
 <!-- ![工作原理](../_static/img/git.png) -->
 <img src="../_static/img/git.png" width="60%" height="60%">
 
-## 4. 常用操作
+## 4. 常用命令
+
+- .gitignore 配置失效
+
+```cmd
+git rm -r --cached .
+git add .
+git commit -m "update .gitignore"
+git push -u origin master
+```
+
+- 查看暂存区状态、查看日志
+
+```cmd
+git status -s
+git log --oneline
+```
+
+- 关联远程仓库
+
+```cmd
+git remote add origin url
+git remote rm origin
+git remote rename old_name new_name
+```
+
+- 分支管理
+
+```cmd
+git branch
+git branch new_branch_name
+git branch -d
+git merge
+git checkout branch_name
+git branch checkout -b new_branch_name
+```
+
+- 多ssh-key配置
+
+>在~/.ssh路径下，生成多个ssh-key
+
+```cmd
+ssh-keygen -t rsa -C '[邮箱]' -f ~/.ssh/github_id_rsa
+ssh-keygen -t rsa -C '[邮箱]' -f ~/.ssh/gitlab_id_rsa
+```
+
+>在~/.ssh路径下，新建配置文件config
+
+```txt
+# github
+Host github.com
+HostName github.com
+PreferredAuthentications publickey
+IdentityFile ~/.ssh/github_id_rsa
+
+# gitlab
+Host gitlab.com
+HostName gitlab.com
+PreferredAuthentications publickey
+IdentityFile ~/.ssh/gitlab_id_rsa
+
+# 如果生成多个 SSH-Key , 则按上面的格式继续往下写
+```
+
