@@ -21,9 +21,5 @@ formats:
 python:
   version: 3.7
   install:
-    - requirements: 
-      - "sphinx"
-      - "sphinx-rtd-theme"
-      - "recommonmark"
-      - "sphinx_markdown_tables"
+    - requirements: source/requirements.txt
 
