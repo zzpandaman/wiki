@@ -7,8 +7,7 @@ Welcome to xjx's documentation!
 ===============================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
-   page/环境搭建
-   page/私有环境
+   tools/index
