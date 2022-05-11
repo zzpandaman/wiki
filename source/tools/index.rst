@@ -6,4 +6,4 @@
    :caption: 常用工具:
 
    sphinx
-   
+   git
