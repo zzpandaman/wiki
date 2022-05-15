@@ -6,4 +6,5 @@
 
    sphinx
    git
+   sublime
    
