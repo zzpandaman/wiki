@@ -37,6 +37,10 @@
 | MarkdownPreview | 用于生成HTML文档进行预览 |
 | LiveReload      | 用于实时预览             |
 
+ | 作者 | 朝代 | 评分 |
+ | :--: | :--: | :--: |
+ | 李白 |  唐  | 100  |
+
 - 配置MarkdownEditing
 
 >组合键 Ctrl+Shift+P 调出命令面板<br>
