@@ -31,13 +31,11 @@
 
 - 所需插件
 
-
-| 所需插件        	| 主要功能                 	|
-|-----------------	|--------------------------	|
-| MarkdownEditing 	| 用于语法高亮             	|
-| MarkdownPreview 	| 用于生成HTML文档进行预览 	|
-| LiveReload      	| 用于实时预览             	|
-
+| 所需插件 | 主要功能 |
+|---|---|
+| MarkdownEditing | 用于语法高亮 |
+| MarkdownPreview | 用于生成HTML文档进行预览 |
+| LiveReload | 用于实时预览 |
 
 - 配置MarkdownEditing
 
