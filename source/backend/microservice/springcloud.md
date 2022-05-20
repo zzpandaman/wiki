@@ -35,7 +35,7 @@ SpringCloud集成了各种微服务功能组件，并基于SpringBoot实现了�
 	    </dependency>
 		```
 	* 添加`@EnableEurekaServer`自动装配
-	* yml 中添加相关配置
+	* application.yml 中添加相关配置
 		```
 		server:
 		  port: 8761 # 8761是eureka server的默认端口
@@ -58,7 +58,7 @@ SpringCloud集成了各种微服务功能组件，并基于SpringBoot实现了�
 	    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 	    </dependency>
 		```
-	* yml 中添加相关配置	
+	* application.yml 中添加相关配置	
 		```
 		server:
 		  port: 8081
@@ -92,7 +92,7 @@ SpringCloud集成了各种微服务功能组件，并基于SpringBoot实现了�
 	    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 	    </dependency>
 		```
-	* yml 中添加相关配置	
+	* application.yml 中添加相关配置	
 		```
 		server:
 		  port: 8081
@@ -116,6 +116,39 @@ SpringCloud集成了各种微服务功能组件，并基于SpringBoot实现了�
 	- 优先拉取同集群下的服务列表，之后随机访问实例
 	- *nacos*可以配置服务实例的权重，可以做安全下线，灰度发布
 
+- *Nacos*作为配置中心
+	- *Quikstart*
+		- *Nacos*控制台添加相关配置
+		- 添加服务端依赖	
+			```
+			<dependency>
+	    	<groupId>com.alibaba.cloud</groupId>
+	    	<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+	    	</dependency>
+			```
+		- bootstrap.yml 中添加相关配置	
+			```
+			spring:
+		  	application:
+		    	name: client-0
+		    profiles:
+		    	active: dev
+		  	cloud:
+		  		nacos:
+		  			server-addr: localhost:8848
+		  			config:
+		  				file-extension: yaml
+			```
+		- 配置热更新——多环境共享配置
+			- `@Value`结合`@RrefreshScope`
+			- `@ConfigurationProperties`
+			- 多环境共享配置下配置生效优先级：
+			
+			  	服务名-profile.yaml > 服务名.yaml > 本地配置
+
+	- 集群部署
+		- <img src="../../_static/img/nacoscluster.png" width="60%" height="60%">
+
 ### 2.4 Eureka 和 Nacos 的不同
 
 |          | Eureka                                 | Nacos                                                                         |
@@ -123,3 +156,5 @@ SpringCloud集成了各种微服务功能组件，并基于SpringBoot实现了�
 | 服务发现 | 消费者定时拉取                         | 消费者定时拉取+心跳异常推送                                                   |
 | 健康检查 | 服务提供者定时发送心跳<br>心跳异常剔除服务 | 临时实例：同Eureka<br>非临时实例：nacosserver主动定时询问，不健康时仅作标记不剔除 |
 | 负载均衡 | Ribbon                                 | NacosRule                                                                     |
+
+## 3 远程调用
