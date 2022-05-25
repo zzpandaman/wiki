@@ -26,6 +26,9 @@
 >	*/
 >   "save_on_focus_lost": true,
 > ```
+> 
+> - 使用cmd
+> 	- 
 
 ## 2. markdown
 
