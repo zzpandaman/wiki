@@ -57,10 +57,11 @@ git remote rename old_name new_name
 ```cmd
 git branch
 git branch new_branch_name
-git branch -d
+git branch -d branch_name
 git merge
 git checkout branch_name
-git branch checkout -b new_branch_name
+git checkout -b new_branch_name
+git push origin remote_branch_name:local_branch_name
 ```
 
 - 多ssh-key配置
