@@ -3,8 +3,35 @@
 ## 1 概述
 
 - 历史
+
+	es是一款非常强大的开源搜索引擎，结合kibana、Logstash、Beats，称为elastic stack(ELK),被广泛应用在日志数据分析、实时监控等领域。
+
+	<img src="../../_static/img/es.png" width="" height=""/>
+	
+	Lucence是一个JAVA语言的搜索引擎类库，是Apache公司的顶级项目，由DougCutting于1999年开发，[Lucence官网](https://lucene.apache.org/)<br>
+
+	+ 优点：高性能(基于倒排索引)、易扩展(作为一个类库)
+	+ 缺点：仅限于JAVA语言、不支持水平扩展
+	
+	2004年shay Banon基于Lucence开发了Compass; 2010年shay Banon重写了Compass,取名为elasticsearch；es的优点
+
+	- 可水平扩展(支持分布式)
+	- 提供Restful接口，可被任何语言调用
+
 - 倒排索引
+
+	<img src="../../_static/img/es1.png" width="" height=""/>
+
 - 对比*Mysql*
+
+	<img src="../../_static/img/es2.png" width="" height=""/>
+
+	- mysql擅长事务类型操作，可以确保数据的安全和一致性。
+	- es擅长海量数据的搜索、分析、计算
+	
+	二者不是替代的关系，应该说是互补的关系，常见应用场景：
+
+	<img src="../../_static/img/es3.png" width="" height=""/>
 
 ## 2 安装
 
@@ -110,10 +137,7 @@
 			- 新建字典文件，*stopword.dic* 已经存在；按需要添加单词即可
 			- 重启*es*生效
 	
-- Windows 安装
-	+ 安装*es*
-	+ 安装*kibana*
-	+ 安装*IK分词器*
+- [Windows安装es](https://blog.csdn.net/weixin_39370907/article/details/99974710)
 	
 ## 3 DSL
 
