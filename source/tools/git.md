@@ -66,7 +66,7 @@ git push origin remote_branch_name:local_branch_name
 
 - 多ssh-key配置
 
->在~/.ssh路径下，生成多个ssh-key
+>git bash运行如下命令，在~/.ssh路径下，生成多个ssh-key
 
 ```cmd
 ssh-keygen -t rsa -C '[邮箱]' -f ~/.ssh/github_id_rsa
