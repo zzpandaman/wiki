@@ -312,3 +312,41 @@ SpringCloud集成了各种微服务功能组件，并基于SpringBoot实现了�
 		            maxAge: 360000 # 一次检测的有效期 单位s
 		```
 
+## 4. 服务监控和保护
+### 4.1 概述
+- 雪崩问题：微服务直接相互调用，因为调用链中的一个服务故障，引起整个链路都无法访问的情况。
+	+ 超时处理：设定超时时间，请求超过一定时间没有响应就返回错误信息，不会无休止等待。
+	+ 舱壁模式：限定每个业务能使用的线程数，避免耗尽整个tomcat资源。
+		* 线程隔离：支持主动超时、异步调用；额外开销较大；适合低扇出场景。
+		* 信号量隔离：轻量；不支持主动超时、异步调用；适合高扇出场景。
+	+ 熔断降级：由断路器统计业务执行的异常比例，如果超出阈值则会熔断该业务，拦截访问该业务的一切请求。
+	+ 流量控制：限制业务访问的QPS，避免服务因流量突增而故障。
+- 相关技术对比：Hystrix已经宣布停止维护。
+![](../../_static/img/sentinel.png)
+### 4.2 sentinel
+- [官网网站](https://sentinelguard.io/zh-cn/)
+- QuikStart
+	+ 安装dashboard:去[官方github](https://github.com/alibaba/Sentinel)下载jar包并运行，启动参数等参考官方文档
+	+ 客户端引入相关依赖、配置sentinel控制台地址
+	
+		```
+		```
+
+		```
+		```
+
+	+ 启用feign对sentinel的支持，编写FeignClient降级逻辑
+	
+		```
+		```
+
+	+ 规则持久化：基于源码改造成push模式，[改造详解](https://github.com/zzpandaman/sentinel-1.8.3-push)
+		* `csp.sentinel.app.type`配置项区分普通客户端和网关客户端，两着引入不同依赖。
+		
+- 常用规则
+	+ 簇点链路：就是项目内的调用链路，链路中**被监控的每个接口**就是一个资源。默认情况下sentinel会监控SpringMVC的每一个端点(Endpoint)。
+	+ 自定义资源：`@SentinelResource`,链路模式下关闭context整合。
+	+ 授权规则
+	+ 自定义异常
+
+
