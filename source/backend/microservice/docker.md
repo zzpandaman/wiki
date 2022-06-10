@@ -83,6 +83,20 @@ docker run ^
   -p 8082:8080 ^
   -v D:\dockervolumes\jenkins\jenkins-data:/var/jenkins_home ^
   -v D:\dockervolumes\jenkins\docker.sock:/var/run/docker.sock ^
-  jenkinsci/blueocean:1.25.5-bcc31d32159f
+jenkinsci/blueocean:1.25.5-bcc31d32159f
 ```
 
+## 5 gitlab
+
+```
+docker run -d ^
+  -p 8008:80 ^
+  -p 8009:443 ^
+  -p 8010:22 ^
+  --name gitlab ^
+  -v D:\dockervolumes\gitlab\etc\gitlab:/etc/gitlab ^
+  -v D:\dockervolumes\gitlab\var\log\gitlab:/var/log/gitlab ^
+  -v D:\dockervolumes\gitlab\var\opt\gitlab:/var/opt/gitlab ^
+  --privileged=true ^
+gitlab/gitlab-ce
+```	
