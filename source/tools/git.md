@@ -24,7 +24,8 @@
 ## 3. 工作原理
 
 <!-- ![工作原理](../_static/img/git.png) -->
-<img src="../_static/img/git.png" width="60%" height="60%">
+<!-- <img src="../_static/img/git.png" width="60%" height="60%"> -->
+<img src="../_static/img/git4.png" width="60%" height="60%">
 
 ## 4. 常用命令
 

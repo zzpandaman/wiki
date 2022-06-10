@@ -330,18 +330,45 @@ SpringCloud集成了各种微服务功能组件，并基于SpringBoot实现了�
 	+ 客户端引入相关依赖、配置sentinel控制台地址
 	
 		```
+		<dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
 		```
 
 		```
+		spring.cloud.sentinel.transport.dashboard=192.168.1.112:8081
 		```
 
 	+ 启用feign对sentinel的支持，编写FeignClient降级逻辑
 	
 		```
+		feign.sentinel.enabled=true
 		```
 
 	+ 规则持久化：基于源码改造成push模式，[改造详解](https://github.com/zzpandaman/sentinel-1.8.3-push)
 		* `csp.sentinel.app.type`配置项区分普通客户端和网关客户端，两着引入不同依赖。
+		
+			```
+			<!-- 普通客户端  -->
+	        <dependency>
+	            <groupId>com.alibaba.csp</groupId>
+	            <artifactId>sentinel-datasource-nacos</artifactId>
+	        </dependency>
+			```		
+
+			```
+			<!-- 网关客户端 -->
+	        <dependency>
+	            <groupId>com.alibaba.csp</groupId>
+	            <artifactId>sentinel-datasource-nacos</artifactId>
+	        </dependency>
+
+	        <dependency>
+	            <groupId>com.alibaba.cloud</groupId>
+	            <artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+	        </dependency>
+			```
 		
 - 常用规则
 	+ 簇点链路：就是项目内的调用链路，链路中**被监控的每个接口**就是一个资源。默认情况下sentinel会监控SpringMVC的每一个端点(Endpoint)。
