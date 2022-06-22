@@ -10,6 +10,12 @@
 - Linux
 
 - Windows
+	+ [docker官网]()下载*windows版 Docker Desktop*的安装包
+	+ 确认CPU已经开启虚拟化功能:任务管理器*性能*页面；未开启的自行开启，可以参考[各机型开启VT](https://www.omicsclass.com/article/367)
+	+ 启用Hyper-V:搜索打开*启用或关闭Windows功能*；如果没有Hyper-V选项，先执行<a href="../../_static/bin/hyper-v.cmd" target="_blank" download="hyper-v.cmd">脚本</a>
+	+ 运行安装程序
+	+ 设置阿里镜像：[个人控制台](https://cr.console.aliyun.com)拿到个人加速地址，启动docker打开设置将地址填入`"registry-mirrors"`下即可。
+	+ `cmd`下即可运行相关命令，如查看版本`docker -v` `docker-compose -v`
 
 ## 3 使用
 
@@ -50,6 +56,10 @@
 	ENTRYPOINT java -jar /tmp/app.jar
 	```
 
+	```
+	docker build -t pwmis-webapi:1.0 -f Dockerfile .
+	```
+
 - DockerCompose及镜像仓库搭建
 
 	```yaml
@@ -58,14 +68,14 @@
 		registry:
 			image: registry
 			volumes:
-				- D:\docker_volumes\registry:var/lib/registry
+				- D:\dockervolumes\registry:var/lib/registry
 		ui:
 			image: joxit/docker-registry-ui
 			ports:
 				- 8086:80
 			environment:
 				- REGISTRY_TITLE=我的私有仓库
-				- REGISTRY_URL=http://registry:8080
+				- REGISTRY_URL=http://registry:8086
 			depends-on:
 				- registry
 	```

@@ -28,7 +28,8 @@
 > ```
 > 
 > - 使用cmd
-> 	- 
+> 	- 安装插件`Shell Turtlestein`
+> 	- `ctrl+ shift +c`唤出控制台，不过好像一次只能执行一条指令
 
 ## 2. markdown
 
