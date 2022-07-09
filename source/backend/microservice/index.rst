@@ -8,4 +8,4 @@
    springcloud
    docker
    elasticsearch
-   
+   ci-di

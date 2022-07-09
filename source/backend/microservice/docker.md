@@ -84,16 +84,24 @@
 
 ## 4 jenkins
 
+使用docker部署jenkins
+
+- 配置maven、安装插件
+- 配置ssh免密登录
+
+```
+ssh-keygen -m PEM -t rsa -b 4096
+scp ./id_rsa.pub x@192.168.1.112:C:/Users/X/.ssh/authorized_keys
+```
+
 ```
 docker run ^
   --name jenkins ^
   -u root ^
-  --rm ^
   -d ^
   -p 8082:8080 ^
   -v D:\dockervolumes\jenkins\jenkins-data:/var/jenkins_home ^
-  -v D:\dockervolumes\jenkins\docker.sock:/var/run/docker.sock ^
-jenkinsci/blueocean:1.25.5-bcc31d32159f
+jenkinsci/blueocean
 ```
 
 ## 5 gitlab
