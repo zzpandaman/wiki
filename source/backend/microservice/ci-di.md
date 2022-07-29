@@ -4,16 +4,16 @@
 
 使用docker部署jenkins
 
-	```
-	docker run ^
-  	--name jenkins ^
-  	-u root ^
-  	-d ^
-  	-p 8082:8080 ^
-  	-p 50000:50000 ^
-  	-v D:\dockervolumes\jenkins\jenkins-data:/var/jenkins_home ^
-	jenkinsci/blueocean
-	```
+```
+docker run ^
+	--name jenkins ^
+	-u root ^
+	-d ^
+	-p 8082:8080 ^
+	-p 50000:50000 ^
+	-v D:\dockervolumes\jenkins\jenkins-data:/var/jenkins_home ^
+jenkinsci/blueocean
+```
 
 1 安装并配置jdk、maven、git 
 
@@ -80,3 +80,8 @@ scp ./id_rsa.pub x@192.168.1.112:C:/Users/X/.ssh/authorized_keys
 
 <!-- 		<img src="../../_static/img/ci-di1.jpeg" width="80%" height="80%">
 		<img src="../../_static/img/ci-di3.jpeg" width="80%" height="80%"> -->
+
+- pipline
+	+ 源码管理：checkout: Check out from version control
+	+ General+构建触发器：properties: Set job properties
+	+ 构建环境：wrap: General Build Wrapper
