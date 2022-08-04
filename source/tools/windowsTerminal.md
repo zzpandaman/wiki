@@ -1,10 +1,10 @@
 # windowsTerminal
 
-## 安装
+## 1. 安装
 
 如果电脑没有自带，[官方推荐](https://github.com/microsoft/terminal) 微软应用商店安装
 
-## 基础设置
+## 2. 基础设置
 
 - 支持图形化界面下配置，与`setting.json`配置文件是相互对应的，文件结构及字段含义参考[官方文档](https://docs.microsoft.com/en-us/windows/terminal/customize-settings/profile-general)：<br>
 - 新增窗口建议修改配置文件，其他设置建议直接通过界面操作<br>
@@ -51,7 +51,7 @@
     }
 ```
 
-### 美化
+## 3. 美化
 
 - 自行配置字体、颜色等字段；我的设置及效果图(以cmd为例)
 

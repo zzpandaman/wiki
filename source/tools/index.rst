@@ -5,6 +5,6 @@
    :maxdepth: 2
 
    sphinx
-   git
    sublime
-   
+   windowsTerminal
+   git
