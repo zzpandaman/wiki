@@ -118,3 +118,10 @@ docker run -d ^
   --privileged=true ^
 gitlab/gitlab-ce
 ```	
+
+## 6 docker compose
+
+```
+docker compose up --build -d name
+docker image prune
+```
