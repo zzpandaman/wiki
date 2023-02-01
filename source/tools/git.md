@@ -194,4 +194,22 @@
 		# 如果生成多个 SSH-Key , 则按上面的格式继续往下写
 		```
 
+	+ .git文件瘦身
+
+	```bash
+	#1.找出大文件的前5个
+   		git verify-pack -v .git/objects/pack/pack-*.idx | sort -k 3 -g | tail -5
+   	#2.找出大文件的文件名
+   		git rev-list --objects --all | grep 8f10eff91bb6aa2de1f5d096ee2e1687b0eab007
+	#3.1.清除该文件的所有历史记录
+   		git filter-branch --index-filter 'git rm -rf --cached --ignore-unmatch filename' --prune-empty --tag-name-filter cat -- --all
+   	#3.2.受影响的索引
+   		rm -rf .git/refs/original/
+   	#4.早期reflog删除
+   		git reflog expire --expire=now --all
+   	#5.清理垃圾
+   		git gc --aggressive --prune=now
+   	#6.推送远程
+   		git push --force [remote] master
+	```
 
