@@ -1,16 +1,16 @@
 # sphinx
 
-## 1. 安装
+## 1. 安装 [官方文档](https://www.sphinx-doc.org/en/master/index.html)
 
 - 通过pip安装(默认已安装python)
 
-```cmd
+```bash
 pip install -i https://pypi.douban.com/simple/ sphinx
 ```
 
 - QuikStart
 
-```cmd
+```bash
 cd workplace 
 sphinx-quikstart  
 make clean
@@ -21,7 +21,7 @@ make html
 
 >安装主题，这里选择sphinx_rtd_theme
 
-```cmd
+```bash
 pip install -i https://pypi.douban.com/simple/ sphinx_rtd_theme
 ```
 
@@ -38,11 +38,11 @@ html_theme = 'sphinx_rtd_theme'
 //在source/_static目录下建立style.css
 
 .wy-nav-content {
-	max-width: none;
+ max-width: none;
 }
 ```
 
-```css
+```js
 //在source/_templates目录下建立layout.html
 
 {% extends "!layout.html" %}
@@ -55,7 +55,7 @@ html_theme = 'sphinx_rtd_theme'
 
 >安装支持
 
-```cmd
+```bash
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple recommonmark sphinx_markdown_tables
 ```
 
@@ -75,7 +75,7 @@ extensions = [
 
 - 上传到git
 
-```cmd
+```bash
 git init
 git add .
 git commit -m "first commit"
@@ -84,7 +84,7 @@ git remote add origin git@github.com:luhuadong/diary.git
 git push -u origin main
 ```
 
-- 托管到 read the docs
+- 托管到 read the docs [官方文档](https://docs.readthedocs.io/en/stable/tutorial/index.html)
 
 >在git仓库根目录下创建RTD需要的配置文件 .readthedocs.yml
 
@@ -122,7 +122,7 @@ python:
 
 >其中用到的 requirements.txt 文件中写入需要安装的依赖
 
-```txt
+```text
 sphinx
 sphinx-rtd-theme
 recommonmark

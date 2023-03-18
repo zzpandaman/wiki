@@ -36,8 +36,9 @@ author = 'xjx'
 # ones.
 extensions = [
 	# "myst-nb",
-	'recommonmark',
-	'sphinx_markdown_tables'
+	# 'recommonmark',
+	'sphinx_markdown_tables',
+	'myst_parser'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -46,7 +47,7 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns = ['']
 
 
 # -- Options for HTML output -------------------------------------------------

@@ -6,6 +6,4 @@
 
    overview
    springcloud
-   docker
-   elasticsearch
    ci-di

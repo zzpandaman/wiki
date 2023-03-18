@@ -20,16 +20,16 @@
 >组合键 Ctrl+Shift+P 调出命令面板<br>
 >输入preference，选择preference：setting<br>
 >
->```
->	/*
->		Auto save
->	*/
+>```text
+> /*
+>  Auto save
+> */
 >   "save_on_focus_lost": true,
 > ```
 
 - 使用cmd
-	+ 安装插件`Shell Turtlestein`
-	+ `ctrl+ shift +c`唤出控制台，不过好像一次只能执行一条指令
+  - 安装插件`Shell Turtlestein`
+  - `ctrl+ shift +c`唤出控制台，不过好像一次只能执行一条指令
 
 ## 2. markdown
 
@@ -41,25 +41,24 @@
 | MarkdownPreview | 用于生成HTML文档进行预览 |
 | LiveReload      | 用于实时预览             |
 
-
 - 配置MarkdownEditing
 
 >组合键 Ctrl+Shift+P 调出命令面板<br>
 >输入并选择keybinds<br>
 >
->```
+>```text
 >[
 >     {"keys": ["alt+m"], "command": "markdown_preview", "args": { "target": "browser"}}
 > ]
 > ```
-> 
+>
 > 之后即可使用快捷键**alt+m**打开浏览器预览
 
 - 配置LiveReload
 
 >自动启动配置：Preference > Package Settings > LiveReload > Settings - User
 >
->```
+>```text
 >{
 >  "enabled_plugins": [
 >      "SimpleReloadPlugin",
@@ -67,6 +66,3 @@
 >  ]
 >}
 >```
-
-
-

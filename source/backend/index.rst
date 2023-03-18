@@ -5,11 +5,7 @@
    :maxdepth: 2
 
 
-   middleWare/index
+   other/index
    microservice/index
    spring/index
    java/index
-   algorithm/index
-   network/index
-   os/index
-   database/index

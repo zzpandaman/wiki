@@ -6,11 +6,13 @@
 
 Welcome to xjx's documentation!
 ===============================
+.. .. note::
 
+..    This project is under active development.
 .. toctree::
    :maxdepth: 3
    :caption: Contents:
 
-   company/index
+   workbench/index
    tools/index
    backend/index

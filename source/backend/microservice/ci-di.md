@@ -2,86 +2,135 @@
 
 ## 1 jenkins
 
-使用docker部署jenkins
+### 1.1 环境搭建
 
-```
-docker run ^
-	--name jenkins ^
-	-u root ^
-	-d ^
-	-p 8082:8080 ^
-	-p 50000:50000 ^
-	-v D:\dockervolumes\jenkins\jenkins-data:/var/jenkins_home ^
-jenkinsci/blueocean
-```
+1. 安装 [官方文档](https://www.jenkins.io/doc/book/installing/windows/)
+2. 找到配置文件(端口 `JENKINS_HOME` 后续修改启动参数),参考官方文档,不同系统不一样
+   1. Windows 在 `JENKINS_HOME` 同级目录
+   2. Linux 查看 jenkins 服务: `/lib/systemd/system/jenkins.service` `usr/lib/systemd/system/jenkins.service`
+   3. docker 对应启动参数
+3. 全局工具配置:配成本机/宿主机上安装的即可
 
-1 安装并配置jdk、maven、git 
+    <details>
+      <img src='../../_static/img/backend-microservice-ci-di-0.png' height='100%' width='100%'/>
+    </details>
 
-2 安装插件 `Maven Integration` `Publish Over SSH`
+4. 插件下载
+   1. Localization: Chinese (Simplified)
+   2. Git Plugin
+   3. Pipeline: Stage View
+   4. Publish Over SSH:jenkins 主机作为 ssh 客户端连接应用节点服务器,配置如下。
 
-3 生成ssh密钥对，将公钥推送给应用服务器
+      <details>
+        <img src='../../_static/img/backend-microservice-ci-di-1.png' height='100%' width='100%'/>
+      </details>
 
-```
-ssh-keygen -m PEM -t rsa -b 4096
-scp ./id_rsa.pub x@192.168.1.112:C:/Users/X/.ssh/authorized_keys
-```
+### 1.2 使用心得
 
-4 发布任务配置:不同的构建模板都能达到一样的效果
+1. jenkins 工作方式
+   1. 本机部署。任务从头到尾在 jenkins 本机/宿主机完成
+   2. 节点部署。任务从头到尾在 jenkins 管理的节点完成
+   3. 本机打包、节点运行。利用 jenkins 所在机器的全局工具进行项目的前期工作、通过 `Publish Over SSH` 插件将文件发送到应用节点运行
+2. 两个 Jenkinsfile
+   1. jenkins 安装在 windows,本机部署。
 
-<img src="../../_static/img/ci-di0.png" width="80%" height="80%">
+      ```groovy
+        node {
+          stage('Git') {
+            git credentialsId: '5a305ccd-acf5-4aef-b510-82d052bb8985', url: 'http://admin@192.168.1.109:9090/r/GXC/GXC.git'
+          }
 
-- General
+          stage('stop') {
+            def status = bat(returnStatus: true, encoding: 'utf8', script:
+                '''
+                    taskkill /f /im %model%.exe /T
+                ''')
+            if (status != 0) {
+                bat ' echo "服务已关闭" '
+            }
+          }
 
-	<img src="../../_static/img/ci-di1.png" width="60%" height="60%">
+          stage('Package') {
+            if(model=="rail-auth" || model=="rail-gateway"){
+                bat "mvn clean package -Dmaven.test.skip=true -pl ./%model%"
+            }else{
+                bat "mvn clean package -Dmaven.test.skip=true -pl ./rail-modules/%model%"
+            }
+          }
 
-	+ Discard old builds:设置构建历史留存规则：最大保存天数、最大保存条数
-	
-- 源码管理
+          stage('run') {
+            bat '''
+                    SCHTASKS /Delete /F /TN %model%
+                    SCHTASKS /Create /F /RU SYSTEM /SC ONSTART /TN %model% /TR D:\\GXC_setup\\jenkins\\%model%.bat
+                    SCHTASKS /RUN /TN %model%
+                '''
+          }
+        }
+      ```
 
-	<img src="../../_static/img/ci-di2.png" width="60%" height="60%">
+   2. jenkins 安装在 windows,本机打包、linux 节点运行。
 
-	+ Repository URL:代码仓库地址，与`git clone`时的一致
-	+ Credentials:配置证书
-	+ Branches to build:指定分支
+      ```groovy
+        node {
+          stage('Git') {
+            git credentialsId: '5a305ccd-acf5-4aef-b510-82d052bb8985', url: 'http://admin@192.168.1.109:9090/r/ITIP/Itip.git'
+          }
 
-- 构建触发器 & 构建环境
-	
-	<img src="../../_static/img/ci-di3.png" width="60%" height="60%">
-	<img src="../../_static/img/ci-di4.png" width="60%" height="60%">
+          stage('Package') {
+            if(model=="itip-system" || model=="itip-file" || model=="itip-knowledge"){
+                bat "mvn clean package -Dmaven.test.skip=true -pl ./itip-modules/%model%"
+            }else if (model=="itip-auth" || model=="itip-gateway"){
+                bat "mvn clean package -Dmaven.test.skip=true -pl ./%model%"
+            }else{
+                bat "mvn clean package -Dmaven.test.skip=true -pl ./itip-modules/itip-tpm/%model%"
+            }
+          }
 
-	- Build periodically:周期性构建-定时构建语法
-	- Add timestamps to the Console Output：控制台添加时间戳
+          stage('run') {
+            if(model=="itip-system" || model=="itip-file" || model=="itip-knowledge"){
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'node-192.168.1.116', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''cd /
+                mv -f ./itip-modules/${model}/target/*.jar /usr/local/itip/${model}/lib
+                cd /usr/local/itip
+                docker compose up --build -d ${model}''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'itip-modules/${model}/target/*.jar')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
+            }else if (model=="itip-auth" || model=="itip-gateway"){
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'node-192.168.1.116', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''cd /
+                mv -f ./${model}/target/*.jar /usr/local/itip/${model}/lib
+                cd /usr/local/itip
+                docker compose up --build -d ${model}''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '${model}/target/*.jar')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
+            }else{
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'node-192.168.1.116', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''cd /
+                mv -f ./itip-modules/itip-tpm/${model}/target/*.jar /usr/local/itip/itip-tpm/${model}/lib
+                cd /usr/local/itip
+                docker compose up --build -d ${model}''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'itip-modules/itip-tpm/${model}/target/*.jar')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)])
+            }
+          }
+        }
+      ```
 
-- Build
-	
-	<img src="../../_static/img/ci-di5.png" width="60%" height="60%">
+3. 本机或节点为 Windows 下的问题
+   1. 中文乱码
+   2. bat 命令错误整个部署报错 [参考官方例子](https://www.jenkins.io/blog/2017/07/26/powershell-pipeline/#using-microsoft-powershell-in-pipeline)
 
-	- Root POM:项目根pom
-	- Goals and options:`mvn clean package`等命令及参数
+      >```groovy
+      >  node {
+      >    def status = powershell(returnStatus: true, script: 'ipconfig')
+      >    if (status == 0) {
+      >        // Success!
+      >    }
+      >  }
+      >```
 
-- Post Steps
+   3. 构建一结束进程就退出了 [从构建中生成进程](https://www.jenkins.io/doc/book/managing/spawning-processes/#sidebar-content) 专门讲了这个问题,针对 windows 提供了三种方式
+      1. at 指令。这个指令已过时
+      2. cscript 包装成脚本。
+      3. SCHTASKS 指令包装成定时任务并立即执行。[微软 SCHTASKS 文档](https://learn.microsoft.com/zh-cn/windows-server/administration/windows-commands/schtasks)
 
-	<img src="../../_static/img/ci-di6.png" width="60%" height="60%">
-
-	- 根据Build结果是否运行Post Steps
-	- Send files or execute commands over SSH:需下载Publish Over SSH
-
-		<img src="../../_static/img/ci-di7.png" width="60%" height="60%">
-
-		- Name:需在系统配置中配置远程节点
-			
-			<img src="../../_static/img/ci-di8.png" width="60%" height="60%">
-
-		- Transfer Set:一次文件传输、执行命令（最少有一项）;一次传输中文件传输结束才执行命令；多次传输则按顺序执行
-			+ Source files：源文件--jenkins服务器；支持通配符、分隔符
-			+ Remove prefix：文件路径过深时减少文件层次
-			+ Remote directory：目标位置--应用服务器
-			+ Exec command：命令;对于windows服务器格式`cmd /c "命令1 & 命令2 ..."`
-
-<!-- 		<img src="../../_static/img/ci-di1.jpeg" width="80%" height="80%">
-		<img src="../../_static/img/ci-di3.jpeg" width="80%" height="80%"> -->
-
-- pipline
-	+ 源码管理：checkout: Check out from version control
-	+ General+构建触发器：properties: Set job properties
-	+ 构建环境：wrap: General Build Wrapper
+          ```groovy
+              stage('run') {
+                bat '''
+                        SCHTASKS /Delete /F /TN %model% 
+                        SCHTASKS /Create /F /RU SYSTEM /SC ONSTART /TN %model% /TR D:\\GXC_setup\\jenkins\\%model%.bat
+                        SCHTASKS /RUN /TN %model% 
+                    '''
+              }
+          ```
