@@ -6,4 +6,3 @@
 
    overview
    springcloud
-   ci-di
