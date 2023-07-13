@@ -7,3 +7,4 @@
    docker
    elasticsearch
    activiti
+   ci-di

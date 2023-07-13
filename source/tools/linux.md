@@ -152,7 +152,7 @@
          advertised.listeners=PLAINTEXT://your_ip:9092
       ```
 
-   4. 打成Service
+   4. 打成Service `/lib/systemd/system` 或者 `/etc/systemd/system`
 
       ```sh
          cd /lib/systemd/system
@@ -188,6 +188,8 @@
          [Install] 
          WantedBy=multi-user.target
       ```
+
+   5. windows下编辑文件需转 unix 格式 `sed -i 's/\r$//' test.sh`
 
 2. docker
    1. [官方教程](https://docs.docker.com/engine/install/centos/)
